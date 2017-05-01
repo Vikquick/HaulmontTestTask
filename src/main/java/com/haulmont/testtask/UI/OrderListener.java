@@ -50,15 +50,15 @@ public class OrderListener {
         description.addValidator(new RegexpValidator("[' 'а-яА-Яa-zA-ZЁё]{1,100}", true, "Данные некорректны"));
 
         //Поле выбора клиента из существующих
-        List<Long> clientsID = new ArrayList<>();
+        List<Long> clientsId = new ArrayList<>();
         DBConnection.startConnection();
         List<Client> clients = DBClient.getClientList();
         int index = clients.size();
         for (int i = 0; i < index; i++) {
-            clientsID.add(clients.get(i).getId());
+            clientsId.add(clients.get(i).getId());
         }
         DBConnection.closeConnection();
-        ComboBox client = new ComboBox("Клиент", clientsID);
+        ComboBox client = new ComboBox("Клиент", clientsId);
         client.setSizeFull();
         client.setRequired(true);
         client.setRequiredError("Выберите клиента!");

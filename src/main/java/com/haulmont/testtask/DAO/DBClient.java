@@ -27,11 +27,11 @@ public class DBClient {
     }
 
     //Удаляем клиента
-    static public int deleteClient(long ID) {
+    static public int deleteClient(Long id) {
 
         try {
             PreparedStatement statement = DBConnection.connection.prepareStatement("DELETE FROM CLIENT WHERE ID = ?");
-            statement.setLong(1, ID);
+            statement.setLong(1, id);
             statement.executeUpdate();
             return 0;
         } catch (SQLException e) {

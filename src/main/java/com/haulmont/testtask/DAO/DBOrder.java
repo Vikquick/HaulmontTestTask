@@ -31,7 +31,7 @@ public class DBOrder {
     }
 
     //Удаляем заказ
-    static public void deleteOrder(long id) {
+    static public void deleteOrder(Long id) {
 
         try {
             PreparedStatement statement = DBConnection.connection.prepareStatement("DELETE FROM SERVICEORDER WHERE id = ?");
