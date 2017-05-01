@@ -5,7 +5,7 @@ package com.haulmont.testtask.Entities;
  */
 public class Client {
 
-    private long id;
+    private Long id;
     private String name;
     private String surname;
     private String middleName;
@@ -26,7 +26,7 @@ public class Client {
         this.id = id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
