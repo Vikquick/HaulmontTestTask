@@ -18,17 +18,17 @@ import java.util.List;
  */
 public class СlientListener {
 
-    public Window clientAddWindow (Grid grid) {
+    public Window clientAddWindow(Grid grid) {
 
 
-            //Создаем окно добавления клиента
+        //Создаем окно добавления клиента
         Window window = new Window("Добавить клиента");
         window.center();
         window.setModal(true);
         window.setWidth("600");
         window.setHeight("600");
 
-            //Создаем слои
+        //Создаем слои
         VerticalLayout clientAddLayout = new VerticalLayout();
         clientAddLayout.setMargin(true);
         clientAddLayout.setSizeFull();
@@ -36,7 +36,7 @@ public class СlientListener {
         HorizontalLayout phoneLayout = new HorizontalLayout();
         HorizontalLayout buttonsLayout = new HorizontalLayout();
 
-            //Поле ввода фамилии
+        //Поле ввода фамилии
         TextField surname = new TextField("Фамилия", "");
         surname.setSizeFull();
         surname.setRequired(true);
@@ -45,7 +45,7 @@ public class СlientListener {
         surname.addValidator(new RegexpValidator("[' 'а-яА-Яa-zA-ZЁё]{1,100}", true, "Данные некорректны"));
 
 
-            //Поле ввода имени
+        //Поле ввода имени
         TextField name = new TextField("Имя", "");
         name.setSizeFull();
         name.setRequired(true);
@@ -54,7 +54,7 @@ public class СlientListener {
         name.addValidator(new RegexpValidator("[' 'а-яА-Яa-zA-ZЁё]{1,100}", true, "Данные некорректны"));
 
 
-            //Поле ввода отчества
+        //Поле ввода отчества
         TextField middleName = new TextField("Отчество", "");
         middleName.setSizeFull();
         middleName.setRequired(true);
@@ -63,7 +63,7 @@ public class СlientListener {
         middleName.addValidator(new RegexpValidator("[' 'а-яА-Яa-zA-ZЁё]{1,100}", true, "Данные некорректны"));
 
 
-            //Поле ввода телефона
+        //Поле ввода телефона
         TextField phone = new TextField("Номер", "");
         phone.setSizeFull();
         phone.setRequired(true);
@@ -72,37 +72,39 @@ public class СlientListener {
         phone.addValidator(new RegexpValidator("[' '\\-\\+()0-9]{1,100}", true, "Данные некорректны"));
 
 
-            //Кнопки добавления клиента и отмены
+        //Кнопки добавления клиента и отмены
         Button add = new Button("Добавить");
         Button close = new Button("Отмена");
 
-            //Действия кнопок
+        //Действия кнопок
         close.addClickListener(clickEvent -> window.close());
         add.addClickListener(clickEvent -> {
             try {
 
                 //Валидируем поля ввода
-            surname.validate();
-            name.validate();
-            middleName.validate();
-            phone.validate();
+                surname.validate();
+                name.validate();
+                middleName.validate();
+                phone.validate();
                 //Добавляем клиента в базу
-            DBConnection.startConnection();
-            Client client = new Client(surname.getValue(), name.getValue(), middleName.getValue(), phone.getValue());
-            DBClient.addClient(client);
+                DBConnection.startConnection();
+                Client client = new Client(surname.getValue(), name.getValue(), middleName.getValue(), phone.getValue());
+                DBClient.addClient(client);
                 //Выводим таблицу с новым клиентом
-            List<Client> clients = DBClient.getClientList();
-            int index = clients.size();
-            grid.addRow(clients.get(index-1).getId(), clients.get(index - 1).getSurname(), clients.get(index - 1).getName(),
-                    clients.get(index - 1).getMiddleName(), clients.get(index - 1).getPhone());
-            DBConnection.closeConnection();
-            window.close();}
-            catch (Validator.InvalidValueException e){Notification.show("Заполните все поля");}
+                List<Client> clients = DBClient.getClientList();
+                int index = clients.size();
+                grid.addRow(clients.get(index - 1).getId(), clients.get(index - 1).getSurname(), clients.get(index - 1).getName(),
+                        clients.get(index - 1).getMiddleName(), clients.get(index - 1).getPhone());
+                DBConnection.closeConnection();
+                window.close();
+            } catch (Validator.InvalidValueException e) {
+                Notification.show("Заполните все поля");
+            }
 
         });
 
 
-            //Добавляем на слои поля ввода и кнопки
+        //Добавляем на слои поля ввода и кнопки
         fioLayout.addComponent(surname);
         fioLayout.addComponent(name);
         fioLayout.addComponent(middleName);
@@ -112,44 +114,48 @@ public class СlientListener {
         buttonsLayout.addComponent(close);
         buttonsLayout.setComponentAlignment(close, Alignment.BOTTOM_RIGHT);
 
-            //Добавляем все на главный слой
+        //Добавляем все на главный слой
         clientAddLayout.addComponent(fioLayout);
         clientAddLayout.addComponent(phoneLayout);
         clientAddLayout.addComponent(buttonsLayout);
-            //Добавляем главный слой в окно
+        //Добавляем главный слой в окно
         window.setContent(clientAddLayout);
-            //Возвращаем результат
+        //Возвращаем результат
         return window;
     }
 
 
-        //Метод удаления клиента
+    //Метод удаления клиента
     void deleteClient(Grid grid) {
-            //Если строка не пустая, то удаляем
-       if (grid.getSelectedRow()==null)
-       {    Notification.show("Выберите клиента для удаления");}
-       else
-           {try
-                {       //Запрос к базе на удаление
-                    DBConnection.startConnection();
-                    int res = DBClient.deleteClient((Long) grid.getContainerDataSource().getItem(grid.getSelectedRow()).
-                    getItemProperty("ID").getValue());
-                    DBConnection.closeConnection();
-                            //Если у клиента заказа нет, то удаляем
-                        if (res == 0)
-                        {grid.getContainerDataSource().removeItem(grid.getSelectedRow());}
-                            //Если у клиента есть заказ, то выводим сообщение
-                        else if(res == 1){Notification.show("Для этого клиента существует заказ");}
+        //Если строка не пустая, то удаляем
+        if (grid.getSelectedRow() == null) {
+            Notification.show("Выберите клиента для удаления");
+        } else {
+            try {       //Запрос к базе на удаление
+                DBConnection.startConnection();
+                int res = DBClient.deleteClient((Long) grid.getContainerDataSource().getItem(grid.getSelectedRow()).
+                        getItemProperty("ID").getValue());
+                DBConnection.closeConnection();
+                //Если у клиента заказа нет, то удаляем
+                if (res == 0) {
+                    grid.getContainerDataSource().removeItem(grid.getSelectedRow());
                 }
-                //Если выбрали кнопку или вообще что то непонятное, нас оповестят :)
-           catch (java.lang.NullPointerException e){Notification.show("Выберите клиента для удаления");
+                //Если у клиента есть заказ, то выводим сообщение
+                else if (res == 1) {
+                    Notification.show("Для этого клиента существует заказ");
+                }
+            }
+            //Если выбрали кнопку или вообще что то непонятное, нас оповестят :)
+            catch (java.lang.NullPointerException e) {
+                Notification.show("Выберите клиента для удаления");
 
-       }
+            }
 
-    }}
+        }
+    }
 
-        //Окно изменения клиента
-public Window clientChangeWindow (Grid grid)
+    //Окно изменения клиента
+    public Window clientChangeWindow(Grid grid)
 
     {       //Создаем окно
         Window window = new Window("Изменить клиента");
@@ -159,15 +165,15 @@ public Window clientChangeWindow (Grid grid)
         window.setHeight("600");
 
         //Создаем слои
-    VerticalLayout clientAddLayout = new VerticalLayout();
-    clientAddLayout.setMargin(true);
-    clientAddLayout.setSizeFull();
-    HorizontalLayout fioLayout = new HorizontalLayout();
-    HorizontalLayout phoneLayout = new HorizontalLayout();
-    HorizontalLayout buttonsLayout = new HorizontalLayout();
+        VerticalLayout clientAddLayout = new VerticalLayout();
+        clientAddLayout.setMargin(true);
+        clientAddLayout.setSizeFull();
+        HorizontalLayout fioLayout = new HorizontalLayout();
+        HorizontalLayout phoneLayout = new HorizontalLayout();
+        HorizontalLayout buttonsLayout = new HorizontalLayout();
 
 
-            //Поле ввода фамилии (Исходные данные внутри)
+        //Поле ввода фамилии (Исходные данные внутри)
         TextField surname = new TextField("Фамилия", grid.getContainerDataSource().getItem(grid.getSelectedRow()).getItemProperty("Фамилия").getValue().toString());
         surname.setSizeFull();
         surname.setRequired(true);
@@ -175,7 +181,7 @@ public Window clientChangeWindow (Grid grid)
         surname.setRequiredError("Укажите фамилию");
         surname.addValidator(new RegexpValidator("[' 'а-яА-Яa-zA-ZЁё]{1,100}", true, "Данные некорректны"));
 
-            //Поле ввода имени (Исходные данные внутри)
+        //Поле ввода имени (Исходные данные внутри)
         TextField name = new TextField("Имя", grid.getContainerDataSource().getItem(grid.getSelectedRow()).getItemProperty("Имя").getValue().toString());
         name.setSizeFull();
         name.setRequired(true);
@@ -183,7 +189,7 @@ public Window clientChangeWindow (Grid grid)
         name.setRequiredError("Укажите имя");
         name.addValidator(new RegexpValidator("[' 'а-яА-Яa-zA-ZЁё]{1,100}", true, "Данные некорректны"));
 
-            //Поле ввода отчества (Исходные данные внутри)
+        //Поле ввода отчества (Исходные данные внутри)
         TextField middleName = new TextField("Отчество", grid.getContainerDataSource().getItem(grid.getSelectedRow()).getItemProperty("Отчество").getValue().toString());
         middleName.setSizeFull();
         middleName.setRequired(true);
@@ -191,7 +197,7 @@ public Window clientChangeWindow (Grid grid)
         middleName.setRequiredError("Укажите отчество");
         middleName.addValidator(new RegexpValidator("[' 'а-яА-Яa-zA-ZЁё]{1,100}", true, "Данные некорректны"));
 
-            //Поле ввода телефона (Исходные данные внутри)
+        //Поле ввода телефона (Исходные данные внутри)
         TextField phone = new TextField("Телефон", grid.getContainerDataSource().getItem(grid.getSelectedRow()).getItemProperty("Телефон").getValue().toString());
         phone.setSizeFull();
         phone.setRequired(true);
@@ -200,22 +206,22 @@ public Window clientChangeWindow (Grid grid)
         phone.addValidator(new RegexpValidator("[' '\\-\\+()0-9]{1,100}", true, "Данные некорректны"));
 
         //Создаем кнопки
-    Button save = new Button("ОК");
-    Button close = new Button("Отменить");
+        Button save = new Button("ОК");
+        Button close = new Button("Отменить");
 
         //Назначаем кнопкам действия
-    close.addClickListener(clickEvent -> window.close());
-    save.addClickListener(clickEvent ->
-            {
-                try {
+        close.addClickListener(clickEvent -> window.close());
+        save.addClickListener(clickEvent ->
+        {
+            try {
 
-                    //Валидируем поля ввода
-                    surname.validate();
-                    name.validate();
-                    middleName.validate();
-                    phone.validate();
+                //Валидируем поля ввода
+                surname.validate();
+                name.validate();
+                middleName.validate();
+                phone.validate();
 
-                    //Изменяем клиента в базе
+                //Изменяем клиента в базе
                 DBConnection.startConnection();
                 Long id = (Long) grid.getContainerDataSource().getItem(grid.getSelectedRow()).
                         getItemProperty("ID").getValue();
@@ -223,19 +229,19 @@ public Window clientChangeWindow (Grid grid)
                 DBClient.updateClient(client);
                 DBConnection.closeConnection();
 
-                    //Обновляем таблицу
+                //Обновляем таблицу
                 grid.getContainerDataSource().getItem(grid.getSelectedRow()).getItemProperty("Фамилия").setValue(surname.getValue());
                 grid.getContainerDataSource().getItem(grid.getSelectedRow()).getItemProperty("Имя").setValue(name.getValue());
                 grid.getContainerDataSource().getItem(grid.getSelectedRow()).getItemProperty("Отчество").setValue(middleName.getValue());
                 grid.getContainerDataSource().getItem(grid.getSelectedRow()).getItemProperty("Телефон").setValue(phone.getValue());
                 window.close();
 
+            } catch (Validator.InvalidValueException e) {
+                Notification.show("Заполните все поля");
             }
-            catch (Validator.InvalidValueException e)
-            {Notification.show("Заполните все поля");}
-            });
+        });
 
-            //Добавляем поля ввода и кнопки на слои
+        //Добавляем поля ввода и кнопки на слои
         fioLayout.addComponent(surname);
         fioLayout.addComponent(name);
         fioLayout.addComponent(middleName);
@@ -245,14 +251,15 @@ public Window clientChangeWindow (Grid grid)
         buttonsLayout.addComponent(close);
         buttonsLayout.setComponentAlignment(close, Alignment.BOTTOM_RIGHT);
 
-            //Добавляем все на главный слой
+        //Добавляем все на главный слой
         clientAddLayout.addComponent(fioLayout);
         clientAddLayout.addComponent(phoneLayout);
         clientAddLayout.addComponent(buttonsLayout);
-            //Добавляем главный слой в окно
+
+        //Добавляем главный слой в окно
         window.setContent(clientAddLayout);
-return window;
-}
+        return window;
+    }
 
 
 }

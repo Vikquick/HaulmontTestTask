@@ -17,8 +17,8 @@ public class MainUI extends UI {
 
     @Override
     protected void init(VaadinRequest request) {
-      Label CarService = new Label("Авто-Сервис");
-      HorizontalLayout horizontalLayout = new HorizontalLayout(CarService);
+        Label CarService = new Label("Авто-Сервис");
+        HorizontalLayout horizontalLayout = new HorizontalLayout(CarService);
         HorizontalLayout tablesLayout = new HorizontalLayout();
         tablesLayout.addComponent(new TableClient().tableClientLayout());
         tablesLayout.addComponent(new TableOrder().tableOrderLayout());
@@ -30,9 +30,6 @@ public class MainUI extends UI {
         mainLayout.setComponentAlignment(horizontalLayout, Alignment.TOP_CENTER);
         mainLayout.addComponent(tablesLayout);
         setContent(mainLayout);
-
-
-
 
 
     }

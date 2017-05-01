@@ -8,7 +8,7 @@ import java.sql.*;
 public class DBConnection {
     public static Connection connection;
 
-    public static void startConnection(){
+    public static void startConnection() {
 
         try {
             Class.forName("org.hsqldb.jdbcDriver");
@@ -17,14 +17,14 @@ public class DBConnection {
         }
 
 
-            try {
-                connection = DriverManager.getConnection("jdbc:hsqldb:file:src/main/Database/servicedb", "SA", "");
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        try {
+            connection = DriverManager.getConnection("jdbc:hsqldb:file:src/main/Database/servicedb", "SA", "");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+    }
 
-    public static void closeConnection(){
+    public static void closeConnection() {
         try {
             PreparedStatement statement = connection.prepareStatement("SHUTDOWN");
             statement.execute();

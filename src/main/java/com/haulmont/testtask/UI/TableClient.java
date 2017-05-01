@@ -14,14 +14,13 @@ import java.util.List;
 public class TableClient {
 
 
+    public VerticalLayout tableClientLayout() {
 
-    public VerticalLayout tableClientLayout(){
-
-            //Название таблицы
+        //Название таблицы
         Label desc = new Label("Клиенты");
         desc.setStyleName(ValoTheme.LABEL_HUGE);
 
-            //Заполнение таблицы
+        //Заполнение таблицы
         Grid grid = new Grid();
         grid.addColumn("ID", Long.class);
         grid.addColumn("Фамилия", String.class);
@@ -39,36 +38,36 @@ public class TableClient {
         DBConnection.closeConnection();
 
 
-            //Слой с кнопками
+        //Слой с кнопками
         HorizontalLayout buttons = new HorizontalLayout();
-            //Создаем кнопки
+        //Создаем кнопки
         Button addClient = new Button("Добавить");
         Button updateClient = new Button("Изменить");
         Button deleteClient = new Button("Удалить");
-            //Добавляем кнопки на их слой
+        //Добавляем кнопки на их слой
         buttons.addComponent(addClient);
         buttons.addComponent(updateClient);
         buttons.addComponent(deleteClient);
 
 
-
-
-            //Создаем главный слой таблицы
+        //Создаем главный слой таблицы
         VerticalLayout tableClient = new VerticalLayout();
-            //Добавляем на него все компоненты
+        //Добавляем на него все компоненты
         tableClient.addComponent(desc);
         tableClient.addComponent(grid);
         tableClient.addComponent(buttons);
-        tableClient.setComponentAlignment(buttons,Alignment.BOTTOM_LEFT);
+        tableClient.setComponentAlignment(buttons, Alignment.BOTTOM_LEFT);
         tableClient.setSizeFull();
 
-                //Устанавливаем действия на кнопки
+        //Устанавливаем действия на кнопки
         addClient.addClickListener(clickEvent -> buttons.getUI().getUI().addWindow(new СlientListener().clientAddWindow(grid)));
         deleteClient.addClickListener(clickEvent -> new СlientListener().deleteClient(grid));
         updateClient.addClickListener(clickEvent -> {
             if (grid.getSelectedRow() != null)
                 buttons.getUI().getUI().addWindow(new СlientListener().clientChangeWindow(grid));
-            else {Notification.show("Выберите клиента");}
+            else {
+                Notification.show("Выберите клиента");
+            }
         });
         return tableClient;
     }

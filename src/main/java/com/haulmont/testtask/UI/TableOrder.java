@@ -14,11 +14,11 @@ import java.util.Date;
  */
 public class TableOrder {
     public VerticalLayout tableOrderLayout() {
-            //Название таблицы
+        //Название таблицы
         Label desc = new Label("Заказы");
         desc.setStyleName(ValoTheme.LABEL_HUGE);
 
-            //Заполнение таблицы
+        //Заполнение таблицы
         Grid grid = new Grid();
         grid.addColumn("ID", Long.class);
         grid.addColumn("Описание", String.class);
@@ -34,46 +34,47 @@ public class TableOrder {
             grid.addRow(clients.get(i).getId(), clients.get(i).getDescription(), clients.get(i).getClient(),
                     clients.get(i).getDateOfCreation().toString(), clients.get(i).getDateOfCompletionOfWork().toString(),
                     clients.get(i).getCost(), clients.get(i).getStatus());
-            DBConnection.closeConnection();
         }
+        DBConnection.closeConnection();
         grid.setSizeFull();
 
 
-            //Создаем слой с кнопками
+        //Создаем слой с кнопками
         HorizontalLayout buttons = new HorizontalLayout();
-                //Создаем кнопки
+        //Создаем кнопки
         Button addOrder = new Button("Добавить");
         Button updateOrder = new Button("Изменить");
         Button deleteOrder = new Button("Удалить");
-                //Добавляем кнопки на их слой
+        //Добавляем кнопки на их слой
         buttons.addComponent(addOrder);
         buttons.addComponent(updateOrder);
         buttons.addComponent(deleteOrder);
 
 
-
-            //Создаем слой фильтра
+        //Создаем слой фильтра
         FormLayout filter = new FormLayout();
-            //Добавляем фильтр на его слой
+        //Добавляем фильтр на его слой
         filter.addComponent(new OrderListener().orderFilter(grid));
 
 
-            //Создаем главный слой
+        //Создаем главный слой
         VerticalLayout tableOrder = new VerticalLayout();
-                //Добавляем на него компоненты
+        //Добавляем на него компоненты
         tableOrder.addComponent(desc);
         tableOrder.addComponent(grid);
         tableOrder.addComponent(buttons);
         tableOrder.addComponent(filter);
-        tableOrder.setComponentAlignment(buttons,Alignment.BOTTOM_RIGHT);
+        tableOrder.setComponentAlignment(buttons, Alignment.BOTTOM_RIGHT);
 
-                    //Добавляем действия на кнопки
-            addOrder.addClickListener(clickEvent -> buttons.getUI().getUI().addWindow(new OrderListener().orderAddWindow(grid)));
-            deleteOrder.addClickListener(clickEvent -> new OrderListener().deleteOrder(grid));
+        //Добавляем действия на кнопки
+        addOrder.addClickListener(clickEvent -> buttons.getUI().getUI().addWindow(new OrderListener().orderAddWindow(grid)));
+        deleteOrder.addClickListener(clickEvent -> new OrderListener().deleteOrder(grid));
         updateOrder.addClickListener(clickEvent -> {
             if (grid.getSelectedRow() != null)
                 buttons.getUI().getUI().addWindow(new OrderListener().orderChangeWindow(grid));
-            else {Notification.show("Выберите клиента");}
+            else {
+                Notification.show("Выберите клиента");
+            }
         });
         return tableOrder;
     }

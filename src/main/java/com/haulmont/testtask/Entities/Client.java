@@ -15,18 +15,15 @@ public class Client {
     }
 
     public Client(String surname, String name, String middleName, String phone) {
-        this.id = id;
         this.name = name;
         this.surname = surname;
         this.middleName = middleName;
         this.phone = phone;
     }
+
     public Client(String surname, String name, String middleName, String phone, Long id) {
+        this(surname, name, middleName, phone);
         this.id = id;
-        this.name = name;
-        this.surname = surname;
-        this.middleName = middleName;
-        this.phone = phone;
     }
 
     public void setId(long id) {
@@ -50,26 +47,24 @@ public class Client {
     }
 
     public Long getId() {
-       return this.id;
+        return this.id;
     }
 
     public String getName() {
-       return this.name;
+        return this.name;
     }
 
     public String getSurname() {
-        return  this.surname;
+        return this.surname;
     }
 
     public String getMiddleName() {
-        return  this.middleName;
+        return this.middleName;
     }
 
     public String getPhone() {
-        return  this.phone;
+        return this.phone;
     }
-
-
 
 
 }

@@ -14,32 +14,28 @@ import java.util.*;
 public class DBOrder {
 
 
-
     //Добавляем заказ
-    static public void addOrder (Order order)
-    {
-        try
-        {
+    static public void addOrder(Order order) {
+        try {
             PreparedStatement statement = DBConnection.connection.prepareStatement("INSERT INTO SERVICEORDER (DESCRIPTION, CLIENT, DATE_START, DATE_END, COST, STATUS) VALUES (?, ?, ?, ?, ?, ?)");
             statement.setString(1, order.getDescription());
             statement.setString(2, order.getClient().toString());
-            statement.setDate(3,  new java.sql.Date(order.getDateOfCreation().getTime()));
-            statement.setDate(4,  new java.sql.Date(order.getDateOfCompletionOfWork().getTime()));
+            statement.setDate(3, new java.sql.Date(order.getDateOfCreation().getTime()));
+            statement.setDate(4, new java.sql.Date(order.getDateOfCompletionOfWork().getTime()));
             statement.setDouble(5, order.getCost());
             statement.setString(6, order.getStatus());
             statement.executeUpdate();
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
     //Удаляем заказ
-    static public void deleteOrder(long id){
+    static public void deleteOrder(long id) {
 
         try {
             PreparedStatement statement = DBConnection.connection.prepareStatement("DELETE FROM SERVICEORDER WHERE id = ?");
-            statement.setLong(1,id);
+            statement.setLong(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -47,14 +43,12 @@ public class DBOrder {
     }
 
     //Выводим список заказов
-  static public ArrayList<Order> getOrderList(){
+    static public ArrayList<Order> getOrderList() {
         ArrayList orders = new ArrayList();
-
         try {
             PreparedStatement statement = DBConnection.connection.prepareStatement("SELECT * FROM SERVICEORDER");
             ResultSet resultSet = statement.executeQuery();
-
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 Order order = new Order();
                 order.setId(resultSet.getLong(1));
                 order.setDescription(resultSet.getString(2));
@@ -72,8 +66,9 @@ public class DBOrder {
 
         return orders;
     }
-//Изменяем заказ
-    static public void updateOrder (Order order){
+
+    //Изменяем заказ
+    static public void updateOrder(Order order) {
         try {
             PreparedStatement statement = DBConnection.connection.prepareStatement("UPDATE SERVICEORDER SET DESCRIPTION = ?, CLIENT = ?, DATE_START = ?, DATE_END = ?, COST = ?, STATUS = ? WHERE ID = ?");
             statement.setString(1, order.getDescription());
