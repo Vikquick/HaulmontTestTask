@@ -343,14 +343,11 @@ public class OrderListener {
 
         //Поля ввода информации для фильтрации
         TextField clientID = new TextField("ID Клиента", "");
-        clientID.setWidth("200");
         clientID.setInputPrompt("Фильтр");
         TextField status = new TextField("Статус", "");
-        status.setWidth("200");
         status.setInputPrompt("Фильтр");
         TextField description = new TextField("Описание", "");
         description.setInputPrompt("Фильтр");
-        description.setWidth("200");
 
 
         //Кнопка "Применить"
