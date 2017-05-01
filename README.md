@@ -1,4 +1,4 @@
-#Haulmont Test Task
+Haulmont Test Task
 
 Prerequisites
 
